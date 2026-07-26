@@ -88,7 +88,67 @@ async def remind(ctx, amount: int, unit: str, *, message="something!"):
 	await ctx.send(f"Will do that! See ya in {amount} {temp}!")
 	await asyncio.sleep(seconds)
 	await ctx.send(f"{ctx.author.mention}, reminder: {message}")
-	
+
+### to do list commands
+
+@bot.group(invoke_without_command=True)
+async def todo(ctx):
+	await ctx.send(
+		"Use #`todo add ...` to add a task \n"
+		"Use #`todo remove (index)` to remove a task \n"
+		"Use #`todo see` to see all your tasks"
+		)
+@todo.command(name="add")
+async def todo_add(ctx, *, task: str):
+	with open("todos.json", "r") as f:
+		data = json.load(f)
+
+	user_id = str(ctx.author.id)
+
+	if user_id not in data:
+		data[user_id] = []
+
+	data[user_id].append(task)
+
+	with open("todos.json", "w") as f:
+		json.dump(data, f)
+
+	await ctx.send("Done!")
+
+@todo.command(name="remove")
+async def todo_remove(ctx, index: int):
+	with open("todos.json", "r") as f:
+		data = json.load(f)
+	user_id = str(ctx.author.id)
+
+	if user_id not in data or not data[user_id]:
+		await ctx.send("You don't have any tasks yet!")
+		return
+
+	if index-1 >= len(data[user_id]) or index <= 0:
+		await ctx.send("Not a valid index! Try again.")
+		return
+
+	data[user_id].remove(data[user_id][index-1])
+
+	with open("todos.json", "w") as f:
+		json.dump(data, f)
+
+	await ctx.send("Done!")
+
+@todo.command(name="see")
+async def todo_see(ctx):
+	with open("todos.json", "r") as f:
+		data = json.load(f)
+	user_id = str(ctx.author.id)
+
+	if user_id not in data or not data[user_id]:
+		await ctx.send("You don't have any tasks yet!")
+		return
+
+	for i in range(len(data[user_id])):
+		await ctx.send(f"{i+1}) {data[user_id][i]} \n")
+	await ctx.send("Feel free to add or remove tasks.")
 
 ############
 
