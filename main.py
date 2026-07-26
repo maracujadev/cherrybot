@@ -20,6 +20,11 @@ async def on_ready():
 async def ping(ctx):
     await ctx.send("Pong!")
 
+@bot.command()
+async def square(ctx, *, number=0):
+	await ctx.send(str(int(number)**2))
+	
+
 @bot.command(name="67")
 async def sixtyseven(ctx):
 	await ctx.send("67?")
