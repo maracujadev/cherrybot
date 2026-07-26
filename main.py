@@ -100,7 +100,7 @@ async def todo(ctx):
 		)
 @todo.command(name="add")
 async def todo_add(ctx, *, task: str):
-	with open("todos.json", "r") as f:
+	with open("todo.json", "r") as f:
 		data = json.load(f)
 
 	user_id = str(ctx.author.id)
@@ -110,14 +110,14 @@ async def todo_add(ctx, *, task: str):
 
 	data[user_id].append(task)
 
-	with open("todos.json", "w") as f:
+	with open("todo.json", "w") as f:
 		json.dump(data, f)
 
 	await ctx.send("Done!")
 
 @todo.command(name="remove")
 async def todo_remove(ctx, index: int):
-	with open("todos.json", "r") as f:
+	with open("todo.json", "r") as f:
 		data = json.load(f)
 	user_id = str(ctx.author.id)
 
@@ -131,14 +131,14 @@ async def todo_remove(ctx, index: int):
 
 	data[user_id].remove(data[user_id][index-1])
 
-	with open("todos.json", "w") as f:
+	with open("todo.json", "w") as f:
 		json.dump(data, f)
 
 	await ctx.send("Done!")
 
 @todo.command(name="see")
 async def todo_see(ctx):
-	with open("todos.json", "r") as f:
+	with open("todo.json", "r") as f:
 		data = json.load(f)
 	user_id = str(ctx.author.id)
 
