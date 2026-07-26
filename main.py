@@ -65,10 +65,22 @@ async def remind(ctx, amount: int, unit: str, *, message="something!"):
 
 	if unit.startswith("min"):
 		seconds = amount * 60
+		if amount == 1:
+			temp = "minute"
+		else:
+			temp = "minutes"
 	elif unit.startswith("hour"):
 		seconds = amount * 3600
+		if amount == 1:
+			temp = "hour"
+		else:
+			temp = "hours"
 	elif unit.startswith("sec"):
 		seconds = amount
+		if amount == 1:
+			temp = "second"
+		else:
+			temp = "seconds"
 	else:
 		await ctx.send("That didnt work. Try using seconds, minutes or hours.")
 		return
