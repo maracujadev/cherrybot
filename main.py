@@ -85,7 +85,7 @@ async def remind(ctx, amount: int, unit: str, *, message="something!"):
 		await ctx.send("That didnt work. Try using seconds, minutes or hours.")
 		return
 
-	await ctx.send(f"Will do that! See ya in {amount} {unit}!")
+	await ctx.send(f"Will do that! See ya in {amount} {temp}!")
 	await asyncio.sleep(seconds)
 	await ctx.send(f"{ctx.author.mention}, reminder: {message}")
 	
