@@ -3,6 +3,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 import asyncio
+import json
 
 
 load_dotenv() #reading from .env
