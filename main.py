@@ -90,6 +90,22 @@ async def remind(ctx, amount: int, unit: str, *, message="something!"):
 	await asyncio.sleep(seconds)
 	await ctx.send(f"{ctx.author.mention}, reminder: {message}")
 
+@bot.command()
+async def avatar(ctx, member: str = None):
+	if member is None:
+		found_member = ctx.author
+	else:
+		try:
+			found_member = await commands.MemberConverter().convert(ctx, member)
+		except:
+			found_member = discord.utils.get(ctx.guild.members, name=member)
+
+	if found_member is None:
+		await ctx.send("Couldnt find anyone.")
+		return
+
+	await ctx.send(found_member.display_avatar.url)
+
 ### to do list commands
 
 @bot.group(invoke_without_command=True)
