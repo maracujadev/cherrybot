@@ -38,9 +38,9 @@ async def member_join(member):
 async def docs(ctx):
 	await ctx.send("""The cherrybot has the following features:
 	------------------------------------------
-	`#ping`")
+	`#ping`
 	-->_replies 'pong!'; test for uptime_
-	`#67`")
+	`#67`
 	-->_let it surprise you_
 	`#remind [amount] [unit]`
 	-->_will send a reminder in the given time_
@@ -179,8 +179,8 @@ async def todo_see(ctx):
 
 	message = ""
 	for i in range(len(data[user_id])):
-		message += f"{i+1}) {data[user_id][i]}"
-	await ctx.send(message + "\n\nFeel free to add or remove tasks.")
+		message += f"{i+1}) {data[user_id][i]} \n"
+	await ctx.send(message + "\nFeel free to add or remove tasks.")
 
 ############
 
