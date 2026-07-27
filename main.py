@@ -5,6 +5,7 @@ import os
 import asyncio
 import json
 from datetime import datetime
+import aiohttp
 
 load_dotenv() #reading from .env
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -190,6 +191,17 @@ async def todo_see(ctx):
 	for i in range(len(data[user_id])):
 		message += f"{i+1}) {data[user_id][i]} \n"
 	await ctx.send(message + "\nFeel free to add or remove tasks.")
+
+### bird api work
+
+@bot.command()
+async def bird(ctx):
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://api.some-random-api.com/animal/bird") as response:
+            data = await response.json()
+
+    await ctx.send(data["image"])
+    await ctx.send(data["fact"])
 
 ############
 
