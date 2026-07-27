@@ -36,22 +36,22 @@ async def member_join(member):
 
 @bot.command()
 async def docs(ctx):
-	await ctx.send("The cherrybot has the following features:")
-	await ctx.send("------------------------------------------")
-	await ctx.send("`#ping`")
-	await ctx.send("-->replies 'pong!'; test for uptime")
-	await ctx.send("`#67`")
-	await ctx.send("-->let it surprise you")
-	await ctx.send("`#remind [amount] [unit]`")
-	await ctx.send("-->will send a reminder in the given time")
-	await ctx.send("`#avatar [user]")
-	await ctx.send("-->sends the given user's avatar")
-	await ctx.send("`#todo add [task]`")
-	await ctx.send("-->adds [task] to your todo-list")
-	await ctx.send("`#todo remove [index]`")
-	await ctx.send("-->removes the given task number")
-	await ctx.send("`#todo see`")
-	await ctx.send("-->responds with your to do list elements")
+	await ctx.send("""The cherrybot has the following features:
+	------------------------------------------
+	`#ping`")
+	-->_replies 'pong!'; test for uptime_
+	`#67`")
+	-->_let it surprise you_
+	`#remind [amount] [unit]`
+	-->_will send a reminder in the given time_
+	`#avatar [user]`
+	-->_sends the given user's avatar_
+	`#todo add [task]`
+	-->_adds [task] to your todo-list_
+	`#todo remove [index]`
+	-->_removes the given task number_
+	`#todo see`
+	-->_responds with your to do list elements_""")
 
 @bot.command()
 async def ping(ctx):
@@ -125,8 +125,8 @@ async def avatar(ctx, member: str = None):
 @bot.group(invoke_without_command=True)
 async def todo(ctx):
 	await ctx.send(
-		"Use #`todo add ...` to add a task"
-		"Use #`todo remove (index)` to remove a task"
+		">>> Use #`todo add ...` to add a task \n"
+		"Use #`todo remove (index)` to remove a task \n"
 		"Use #`todo see` to see all your tasks"
 		)
 @todo.command(name="add")
@@ -144,7 +144,7 @@ async def todo_add(ctx, *, task: str):
 	with open("todo.json", "w") as f:
 		json.dump(data, f)
 
-	await ctx.send("Done!")
+	await ctx.send("Added your new task!")
 
 @todo.command(name="remove")
 async def todo_remove(ctx, index: int):
@@ -165,7 +165,7 @@ async def todo_remove(ctx, index: int):
 	with open("todo.json", "w") as f:
 		json.dump(data, f)
 
-	await ctx.send("Done!")
+	await ctx.send(f"Removed task {index+1}.")
 
 @todo.command(name="see")
 async def todo_see(ctx):
@@ -177,9 +177,10 @@ async def todo_see(ctx):
 		await ctx.send("You don't have any tasks yet!")
 		return
 
+	message = ""
 	for i in range(len(data[user_id])):
-		await ctx.send(f"{i+1}) {data[user_id][i]}")
-	await ctx.send("Feel free to add or remove tasks.")
+		message += f"{i+1}) {data[user_id][i]}"
+	await ctx.send(message + "\n\nFeel free to add or remove tasks.")
 
 ############
 
