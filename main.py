@@ -35,13 +35,27 @@ async def member_join(member):
 ### commands
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send("Pong!")
+async def docs(ctx):
+	await ctx.send("The cherrybot has the following features:")
+	await ctx.send("------------------------------------------")
+	await ctx.send("`#ping`")
+	await ctx.send("-->replies 'pong!'; test for uptime")
+	await ctx.send("`#67`")
+	await ctx.send("-->let it surprise you")
+	await ctx.send("`#remind [amount] [unit]`")
+	await ctx.send("-->will send a reminder in the given time")
+	await ctx.send("`#avatar [user]")
+	await ctx.send("-->sends the given user's avatar")
+	await ctx.send("`#todo add [task]`")
+	await ctx.send("-->adds [task] to your todo-list")
+	await ctx.send("`#todo remove [index]`")
+	await ctx.send("-->removes the given task number")
+	await ctx.send("`#todo see`")
+	await ctx.send("-->responds with your to do list elements")
 
 @bot.command()
-async def square(ctx, *, number=0):
-	await ctx.send(str(int(number)**2))
-	
+async def ping(ctx):
+    await ctx.send("Pong!")
 
 @bot.command(name="67")
 async def sixtyseven(ctx):
@@ -111,8 +125,8 @@ async def avatar(ctx, member: str = None):
 @bot.group(invoke_without_command=True)
 async def todo(ctx):
 	await ctx.send(
-		"Use #`todo add ...` to add a task \n"
-		"Use #`todo remove (index)` to remove a task \n"
+		"Use #`todo add ...` to add a task"
+		"Use #`todo remove (index)` to remove a task"
 		"Use #`todo see` to see all your tasks"
 		)
 @todo.command(name="add")
@@ -164,7 +178,7 @@ async def todo_see(ctx):
 		return
 
 	for i in range(len(data[user_id])):
-		await ctx.send(f"{i+1}) {data[user_id][i]} \n")
+		await ctx.send(f"{i+1}) {data[user_id][i]}")
 	await ctx.send("Feel free to add or remove tasks.")
 
 ############
