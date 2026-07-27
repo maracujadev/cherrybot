@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import asyncio
 import json
-
+from datetime import datetime
 
 load_dotenv() #reading from .env
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -16,6 +16,8 @@ intents.members = True
 bot = commands.Bot(command_prefix="#", intents=intents, case_insensitive=True)
 
 ######################
+
+start_time = datetime.now()
 
 ### terminal
 
@@ -40,6 +42,8 @@ async def docs(ctx):
 	------------------------------------------
 	`#ping`
 	-->_replies 'pong!'; test for uptime_
+	`#uptime`
+	-->_replies uptime length_
 	`#67`
 	-->_let it surprise you_
 	`#remind [amount] [unit]`
@@ -56,6 +60,11 @@ async def docs(ctx):
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong!")
+
+@bot.command()
+async def uptime(ctx):
+	delta = datetime.now() - start_time
+	await ctx.send(f"This instance has been running for {delta}.")
 
 @bot.command(name="67")
 async def sixtyseven(ctx):
@@ -165,7 +174,7 @@ async def todo_remove(ctx, index: int):
 	with open("todo.json", "w") as f:
 		json.dump(data, f)
 
-	await ctx.send(f"Removed task {index+1}.")
+	await ctx.send(f"Removed task {index}.")
 
 @todo.command(name="see")
 async def todo_see(ctx):
