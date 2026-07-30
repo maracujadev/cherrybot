@@ -31,7 +31,7 @@ async def on_ready():
 WELCOME_CHANNEL = 1516017173439582229
 
 @bot.event
-async def member_join(member):
+async def on_member_join(member):
 	channel = bot.get_channel(WELCOME_CHANNEL)
 	await channel.send(f"Welcome, {member.mention}!")
 
@@ -56,7 +56,47 @@ async def docs(ctx):
 	`#todo remove [index]`
 	-->_removes the given task number_
 	`#todo see`
-	-->_responds with your to do list elements_""")
+	-->_responds with your to do list elements_
+	`#bird`
+	-->_responds with a random bird image and fact (unrelated)_
+	`#createrole [hex] [role-name]`
+	-->_creates a new role with color and name_""")
+
+### admin tool
+
+def is_admin(ctx):
+	with open("admins.json", "r") as f:
+		data = json.load(f)
+
+	guild_id = str(ctx.guild.id)
+
+	if guild_id not in data:
+		return False
+
+	admin_role_id = data[guild_id]
+
+	for role in ctx.author.roles:
+		if str(role.id) == admin_role_id:
+			return True
+
+	return False
+
+@bot.command()
+async def admin_add(ctx, role: discord.Role):
+	if ctx.author.id != ctx.guild.owner_id:
+		await ctx.send("Only the owner can use this command.")
+		return
+	with open("admins.json", "r") as f:
+		data = json.load(f)
+
+	guild_id = str(ctx.guild.id)
+
+	data[guild_id] = role.id
+
+	with open("admins.json", "w") as f:
+		json.dump(data, f)
+
+	await ctx.send("Done! Added an admin role for the server.")
 
 @bot.command()
 async def ping(ctx):
@@ -202,6 +242,90 @@ async def bird(ctx):
 
     await ctx.send(data["image"])
     await ctx.send(data["fact"])
+
+### reaction role system
+
+@bot.command()
+@commands.check(is_admin)
+async def createrole(ctx, hex_color: str, *, role_name: str):
+	hex_color = hex_color[1:]
+	try:
+		role_color = int(hex_color, 16)
+	except ValueError:
+		await ctx.send("Thats not an accepted color. Try again.")
+		return
+	await ctx.guild.create_role(name=role_name, colour=discord.Colour(role_color))
+
+@bot.command()
+@commands.check(is_admin)
+async def announce(ctx, *, text: str):
+	await ctx.send(">>> " + text)
+
+@bot.command()
+@commands.check(is_admin)
+async def addreact(ctx, msg_id: int, emoji: str, role: discord.Role):
+	message = await ctx.channel.fetch_message(msg_id)
+	msg_id = str(msg_id)
+	await message.add_reaction(emoji)
+
+	with open("reaction_roles.json", "r") as f:
+		data = json.load(f)
+
+	if msg_id not in data:
+		data[msg_id] = {}
+
+	data[msg_id][emoji] = role.id
+
+	with open("reaction_roles.json", "w") as f:
+		json.dump(data, f)
+
+@bot.event
+async def on_raw_reaction_add(payload):
+	if payload.user_id == bot.user.id:
+		return
+	with open("reaction_roles.json", "r") as f:
+		data = json.load(f)
+
+	msg_id = str(payload.message_id)
+
+	if msg_id not in data:
+		return
+	emoji = str(payload.emoji)
+
+	if emoji not in data[msg_id]:
+		return
+
+	role_id = data[msg_id][emoji]
+	guild = bot.get_guild(payload.guild_id)
+	role = guild.get_role(int(role_id))
+	member = guild.get_member(payload.user_id)
+
+	await member.add_roles(role)
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+	if payload.user_id == bot.user.id:
+		return
+
+	with open("reaction_roles.json", "r") as f:
+		data = json.load(f)
+
+	msg_id = str(payload.message_id)
+
+	if msg_id not in data:
+		return
+
+	emoji = str(payload.emoji)
+
+	if emoji not in data[msg_id]:
+		return
+
+	role_id = data[msg_id][emoji]
+	guild = bot.get_guild(payload.guild_id)
+	role = guild.get_role(int(role_id))
+	member = guild.get_member(payload.user_id)
+
+	await member.remove_roles(role)
 
 ############
 
