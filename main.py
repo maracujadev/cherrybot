@@ -91,7 +91,7 @@ async def admin_add(ctx, role: discord.Role):
 
 	guild_id = str(ctx.guild.id)
 
-	data[guild_id] = role.id
+	data[guild_id] = str(role.id)
 
 	with open("admins.json", "w") as f:
 		json.dump(data, f)
