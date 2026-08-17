@@ -18,11 +18,11 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="#", intents=intents, case_insensitive=True)
 
-######################
+##### UNIVERSAL CONSTANTS
 
 start_time = datetime.now(timezone.utc)
 
-### terminal
+##### TERMINAL
 
 
 @bot.event
@@ -30,18 +30,7 @@ async def on_ready():
     print(f"Logged in as {bot.user} at {start_time}")
 
 
-### events
-
-WELCOME_CHANNEL = 1516017173439582229
-
-
-@bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(WELCOME_CHANNEL)
-    await channel.send(f"Welcome, {member.mention}!")
-
-
-### commands
+##############################################################
 
 
 @bot.command()
@@ -70,7 +59,7 @@ async def docs(ctx):
 -->creates a new role with color and name""")
 
 
-### admin tool
+##### ADMIN TOOLS
 
 
 def is_admin(ctx):
@@ -110,7 +99,7 @@ async def admin_add(ctx, role: discord.Role):
     await ctx.send("Done! Added an admin role for the server.")
 
 
-### basic command work
+##### BASIC COMMANDS
 
 
 @bot.command()
@@ -195,7 +184,7 @@ async def avatar_error(ctx, error):
         raise error
 
 
-### to do list commands
+##### TO DO SYSTEM
 
 
 @bot.group(invoke_without_command=True)
@@ -267,7 +256,7 @@ async def todo_see(ctx):
     await ctx.send(message + "\nFeel free to add or remove tasks.")
 
 
-### bird api work
+##### API CALLING
 
 
 @bot.command()
@@ -282,7 +271,7 @@ async def bird(ctx):
     await ctx.send(data["fact"])
 
 
-### reaction role system
+##### REACTION ROLES
 
 
 @bot.command()
@@ -310,24 +299,29 @@ async def addreact(ctx, msg_id: int, emoji: str, role: discord.Role):
     msg_id = str(msg_id)
     await message.add_reaction(emoji)
 
-    with open("reaction_roles.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("reaction_roles.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
 
     if msg_id not in data:
         data[msg_id] = {}
 
     data[msg_id][emoji] = role.id
 
-    with open("reaction_roles.json", "w") as f:
-        json.dump(data, f)
+    async with aiofiles.open("reaction_roles.json", "w") as f:
+        await f.write(json.dumps(data))
+
+
+##### EVENTS
 
 
 @bot.event
 async def on_raw_reaction_add(payload):
     if payload.user_id == bot.user.id:
         return
-    with open("reaction_roles.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("reaction_roles.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
 
     msg_id = str(payload.message_id)
 
@@ -351,8 +345,9 @@ async def on_raw_reaction_remove(payload):
     if payload.user_id == bot.user.id:
         return
 
-    with open("reaction_roles.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("reaction_roles.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
 
     msg_id = str(payload.message_id)
 
@@ -370,6 +365,15 @@ async def on_raw_reaction_remove(payload):
     member = guild.get_member(payload.user_id)
 
     await member.remove_roles(role)
+
+
+WELCOME_CHANNEL = 1516017173439582229
+
+
+@bot.event
+async def on_member_join(member):
+    channel = bot.get_channel(WELCOME_CHANNEL)
+    await channel.send(f"Welcome, {member.mention}!")
 
 
 ############
