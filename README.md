@@ -6,9 +6,9 @@ __Documentation__
 the main features include:
 
 - reminder tool
+- reaction-role system
 - avatar caller
 - welcome messages
+- small API calls to send bird images
 - to-do list creator, exporting data to .json
-- (planned) uptime and resource monitor
 - (planned) cog setup
-- (planned) polls + announcements

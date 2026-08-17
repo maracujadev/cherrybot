@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime, timezone
 
+import aiofiles
 import aiohttp
 import discord
 from discord.ext import commands
@@ -45,28 +46,28 @@ async def on_member_join(member):
 
 @bot.command()
 async def docs(ctx):
-    await ctx.send("""The cherrybot has the following features:
-	------------------------------------------
-	`#ping`
-	-->_replies 'pong!'; test for uptime_
-	`#uptime`
-	-->_replies uptime length_
-	`#67`
-	-->_let it surprise you_
-	`#remind [amount] [unit]`
-	-->_will send a reminder in the given time_
-	`#avatar [user]`
-	-->_sends the given user's avatar_
-	`#todo add [task]`
-	-->_adds [task] to your todo-list_
-	`#todo remove [index]`
-	-->_removes the given task number_
-	`#todo see`
-	-->_responds with your to do list elements_
-	`#bird`
-	-->_responds with a random bird image and fact (unrelated)_
-	`#createrole [hex] [role-name]`
-	-->_creates a new role with color and name_""")
+    await ctx.send(""">>>The cherrybot has the following features:
+------------------------------------------
+`#ping`
+-->replies 'pong!'; test for uptime
+`#uptime`
+-->replies uptime length
+`#67`
+-->let it surprise you
+`#remind [amount] [unit]`
+-->will send a reminder in the given time
+`#avatar [user]`
+-->sends the given user's avatar or your own if none is given
+`#todo add [task]`
+-->adds [task] to your todo-list
+`#todo remove [index]`
+-->removes the given task number
+`#todo see`
+-->responds with your to do list elements
+`#bird`
+-->responds with a random bird image and fact (unrelated)
+`#createrole [hex] [role-name]`
+-->creates a new role with color and name""")
 
 
 ### admin tool
@@ -95,15 +96,16 @@ async def admin_add(ctx, role: discord.Role):
     if ctx.author.id != ctx.guild.owner_id:
         await ctx.send("Only the owner can use this command.")
         return
-    with open("admins.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("admins.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
 
     guild_id = str(ctx.guild.id)
 
     data[guild_id] = str(role.id)
 
-    with open("admins.json", "w") as f:
-        json.dump(data, f)
+    async with aiofiles.open("admins.json", "w") as f:
+        await f.write(json.dumps(data))
 
     await ctx.send("Done! Added an admin role for the server.")
 
@@ -113,7 +115,7 @@ async def admin_add(ctx, role: discord.Role):
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send(f"Pong! My latency is {bot.latency}.")
+    await ctx.send(f"Pong! My latency is {round(bot.latency * 1000, 2)}ms.")
 
 
 @bot.command()
@@ -207,8 +209,9 @@ async def todo(ctx):
 
 @todo.command(name="add")
 async def todo_add(ctx, *, task: str):
-    with open("todo.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("todo.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
 
     user_id = str(ctx.author.id)
 
@@ -217,8 +220,8 @@ async def todo_add(ctx, *, task: str):
 
     data[user_id].append(task)
 
-    with open("todo.json", "w") as f:
-        json.dump(data, f)
+    async with aiofiles.open("todo.json", "w") as f:
+        await f.write(json.dumps(data))
 
     await ctx.send("Added your new task!")
 
@@ -226,8 +229,9 @@ async def todo_add(ctx, *, task: str):
 @todo.command(name="remove")
 async def todo_remove(ctx, index: int):
 
-    with open("todo.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("todo.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
     user_id = str(ctx.author.id)
 
     if user_id not in data or not data[user_id]:
@@ -240,16 +244,17 @@ async def todo_remove(ctx, index: int):
 
     data[user_id].remove(data[user_id][index - 1])
 
-    with open("todo.json", "w") as f:
-        json.dump(data, f)
+    async with aiofiles.open("todo.json", "w") as f:
+        await f.write(json.dumps(data))
 
     await ctx.send(f"Removed task {index}.")
 
 
 @todo.command(name="see")
 async def todo_see(ctx):
-    with open("todo.json", "r") as f:
-        data = json.load(f)
+    async with aiofiles.open("todo.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
     user_id = str(ctx.author.id)
 
     if user_id not in data or not data[user_id]:
