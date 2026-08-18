@@ -41,12 +41,6 @@ async def on_ready():
 async def docs(ctx):
     await ctx.send(""">>>The cherrybot has the following features:
 ------------------------------------------
-`#ping`
--->replies 'pong!'; test for uptime
-`#uptime`
--->replies uptime length
-`#67`
--->let it surprise you
 `#remind [amount] [unit]`
 -->will send a reminder in the given time
 `#avatar [user]`
@@ -99,6 +93,21 @@ async def admin_add(ctx, role: discord.Role):
         await f.write(json.dumps(data))
 
     await ctx.send("Done! Added an admin role for the server.")
+
+
+@bot.command()
+async def adminrole(ctx):
+    server = str(ctx.guild.id)
+    async with aiofiles.open("admins.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
+    if server not in data:
+        await ctx.send(
+            "This server doesnt have an admin role yet. Ask the server owner to create one."
+        )
+        return
+    role = ctx.guild.get_role(int(data[server]))
+    await ctx.send(f"The admin role for this server is {role.name}.")
 
 
 ##### BASIC COMMANDS
@@ -162,10 +171,6 @@ async def remind(ctx, amount: int, unit: str, *, message="something!"):
 async def avatar(ctx, member: discord.Member = None):
     if member is None:
         member = ctx.author
-
-    if member is None:
-        await ctx.send("Couldnt find anyone.")
-        return
 
     await ctx.send(member.display_avatar.url)
 
