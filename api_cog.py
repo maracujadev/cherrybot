@@ -14,7 +14,7 @@ class APICOG(commands.Cog):
     async def cat(self, ctx):
         headers = {"x-api-key": catapi_key}
         try:
-            async with aiohttp.ClientSession(headers=headers) as session:
+            async with aiohttp.ClientSession(headers=headers) as session:  # noqa: SIM117
                 async with session.get(
                     "https://api.thecatapi.com/v1/images/search"
                 ) as img_resp:
@@ -22,7 +22,7 @@ class APICOG(commands.Cog):
                     image_url = img_data[0]["url"]
 
             await ctx.send(image_url)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             await ctx.send("Cant fetch a cat right now. Try again later.")
             print(f"Debug error: {e}")
 

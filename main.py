@@ -15,7 +15,7 @@ intents = discord.Intents.default()
 intents.message_content = True  # for reading messages
 intents.members = True
 
-bot = commands.Bot(command_prefix="#", intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix="%", intents=intents, case_insensitive=True)
 
 ##### UNIVERSAL CONSTANTS
 
@@ -29,7 +29,7 @@ async def on_ready():
     print(f"Logged in as {bot.user} at {start_time}")
     print(f"Tracking {len(bot.guilds)} servers with {len(bot.users)} users.")
     activity = discord.Activity(
-        type=discord.ActivityType.listening, name="to the trees"
+        type=discord.ActivityType.competing, name="in something"
     )
     await bot.change_presence(activity=activity)
 
