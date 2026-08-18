@@ -382,5 +382,4 @@ async def load_extensions():
     await bot.load_extension("bird_cog")
 
 
-asyncio.run(load_extensions)
 bot.run(TOKEN)
