@@ -379,11 +379,7 @@ async def on_member_join(member):
 
 
 async def load_extensions():
-    try:
-        await bot.load_extension("bird_cog")
-        print("Successfully sent load request for bird_cog!")
-    except Exception as e:
-        print(f"❌ ERROR LOADING COG: {e}")
+    await bot.load_extension("api_cog")
 
 
 async def main():
