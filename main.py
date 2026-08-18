@@ -28,6 +28,11 @@ start_time = datetime.now(timezone.utc)
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user} at {start_time}")
+    print(f"Tracking {len(bot.guilds)} servers with {len(bot.users)} users.")
+    activity = discord.Activity(
+        type=discord.ActivityType.listening, name="to the trees"
+    )
+    await bot.change_presence(activity=activity)
 
 
 ##############################################################
@@ -111,6 +116,13 @@ async def ping(ctx):
 async def uptime(ctx):
     delta = datetime.now(timezone.utc) - start_time
     await ctx.send(f"This instance has been running for {delta}.")
+
+
+@bot.command()
+async def stats(ctx):
+    await ctx.send(
+        f"I am currently held hostage in {len(bot.guilds)} servers, helping out {len(bot.users)} users."
+    )
 
 
 @bot.command(name="67")
