@@ -57,8 +57,6 @@ async def docs(ctx):
 -->removes the given task number
 `#todo see`
 -->responds with your to do list elements
-`#bird`
--->responds with a random bird image and fact (unrelated)
 `#createrole [hex] [role-name]`
 -->creates a new role with color and name""")
 
@@ -127,21 +125,6 @@ async def stats(ctx):
 @bot.command(name="67")
 async def sixtyseven(ctx):
     await ctx.send("https://tenor.com/pU4XiE6POTB.gif")
-
-
-@bot.command()
-async def name(ctx, *, username=None):
-    if username is None:
-        await ctx.send("No name written. Try `#name Anna`.")
-        return
-    await ctx.send(f"hi, {username.strip().lower().capitalize()}")
-    if username.strip().lower() == "alex":
-        await ctx.send("thats a nice name btw!")
-
-
-@bot.command()
-async def poker(ctx):
-    await ctx.send("Poker? I barely know her!")
 
 
 @bot.command()
@@ -380,6 +363,7 @@ async def on_member_join(member):
 
 async def load_extensions():
     await bot.load_extension("api_cog")
+    await bot.load_extension("doc_cog")
 
 
 async def main():
