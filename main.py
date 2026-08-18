@@ -4,7 +4,6 @@ import os
 from datetime import datetime, timezone
 
 import aiofiles
-import aiohttp
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -271,18 +270,6 @@ async def todo_see(ctx):
 ##### API CALLING
 
 
-@bot.command()
-async def bird(ctx):
-    async with (
-        aiohttp.ClientSession() as session,
-        session.get("https://api.some-random-api.com/animal/bird") as response,
-    ):
-        data = await response.json()
-
-    await ctx.send(data["image"])
-    await ctx.send(data["fact"])
-
-
 ##### REACTION ROLES
 
 
@@ -390,4 +377,10 @@ async def on_member_join(member):
 
 ############
 
+
+async def load_extensions():
+    await bot.load_extension("bird_cog")
+
+
+asyncio.run(load_extensions)
 bot.run(TOKEN)
