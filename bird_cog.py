@@ -18,6 +18,10 @@ class BirdCog(commands.Cog):
         await ctx.send(data["image"])
         await ctx.send(data["fact"])
 
+    @commands.command()
+    async def test(self, ctx):
+        await ctx.send("Test worked, cherry")
+
     @commands.Cog.listener()
     async def on_cog_load(self):
         print("SUCCESS: cog has been loaded")
