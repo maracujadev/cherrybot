@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # reading from .env
 TOKEN = os.getenv("DISCORD_TOKEN")
+ADMIN_ID = os.getenv("ADMIN_ID")
 
 intents = discord.Intents.default()
 intents.message_content = True  # for reading messages
@@ -181,6 +182,15 @@ async def avatar_error(ctx, error):
         await ctx.send("Could not find that person.")
     else:
         raise error
+
+
+@bot.command()
+async def report(ctx, *, content: str):
+    reporter = ctx.author.name
+    admin = await bot.fetch_user(int(ADMIN_ID))
+    embed = discord.Embed(title=reporter, description=content)
+    embed.set_image(url=ctx.author.display_avatar.url)
+    await admin.send(embed=embed)
 
 
 ##### TO DO SYSTEM
