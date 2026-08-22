@@ -53,6 +53,8 @@ class LEVELCOG(commands.Cog):
 
         You need {100 - cur_xp} XP to get to the next level."""
 
+        await ctx.send(embed=embed)
+
     @commands.command()
     async def quadratic(self, ctx):
         await ctx.send("This command is only a prototype for now. Lol.")
