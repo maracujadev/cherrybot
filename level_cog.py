@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands
 from PIL import Image, ImageDraw
 
-from main import is_admin
+from admin_utils import is_admin
 
 
 # potentially add user to levels.json

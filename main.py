@@ -8,6 +8,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from admin_utils import is_admin
+
 load_dotenv()  # reading from .env
 TOKEN = os.getenv("DISCORD_TOKEN")
 ADMIN_ID = os.getenv("ADMIN_ID")
@@ -57,24 +59,6 @@ async def old_docs(ctx):
 
 
 ##### ADMIN TOOLS
-
-
-def is_admin(ctx):
-    with open("admins.json", "r") as f:
-        data = json.load(f)
-
-    guild_id = str(ctx.guild.id)
-
-    if guild_id not in data:
-        return False
-
-    admin_role_id = data[guild_id]
-
-    for role in ctx.author.roles:
-        if str(role.id) == admin_role_id:
-            return True
-
-    return False
 
 
 @bot.command()
