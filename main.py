@@ -39,7 +39,7 @@ async def on_ready():
 
 
 @bot.command()
-async def docs(ctx):
+async def old_docs(ctx):
     await ctx.send(""">>>The cherrybot has the following features:
 ------------------------------------------
 `#remind [amount] [unit]`
