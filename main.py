@@ -191,6 +191,7 @@ async def report(ctx, *, content: str):
     embed = discord.Embed(title=reporter, description=content)
     embed.set_image(url=ctx.author.display_avatar.url)
     await admin.send(embed=embed)
+    await ctx.send("Sent a report to the bot owner.")
 
 
 ##### TO DO SYSTEM
@@ -379,6 +380,7 @@ async def on_member_join(member):
 async def load_extensions():
     await bot.load_extension("api_cog")
     await bot.load_extension("doc_cog")
+    await bot.load_extension("level_cog")
 
 
 async def main():

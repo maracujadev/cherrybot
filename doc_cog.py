@@ -5,6 +5,10 @@ class DOCCOG(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name="docs")
+    async def documentation(self, ctx):
+        await ctx.send("")
+
     @commands.command(name="setup")
     async def setup(self, ctx):
         await ctx.send(""">>> # How to set up the cherry bot
@@ -15,7 +19,7 @@ class DOCCOG(commands.Cog):
 - type `%admin_add @[some_role]`
 - type `%adminrole` to see the current admin role""")
 
-    @commands.command(name="")
+    @commands.command(name="reaction_setup")
     async def reaction_role_manual(self, ctx):
         await ctx.send(""">>> # How to set up reaction role""")
 
