@@ -60,8 +60,8 @@ class LEVELCOG(commands.Cog):
     @commands.command()
     @commands.check(is_admin)
     async def give_xp(self, ctx, user_id: str, amount: int):
-        level_add(user_id)
-        add_xp(user_id, amount)
+        await level_add(user_id)
+        await add_xp(user_id, amount)
 
     @commands.command()
     async def rank(self, ctx):
