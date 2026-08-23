@@ -97,7 +97,7 @@ class LEVELCOG(commands.Cog):
         draw.rounded_rectangle([170, 20, 480, 60], radius=20, fill=(240, 100, 90))
         draw.rounded_rectangle([170, 75, 480, 175], radius=20, fill=(240, 100, 90))
 
-        font1 = ImageFont.truetype("Anta.ttf", 25)
+        font1 = ImageFont.truetype("Anta.ttf", 20)
         font2 = ImageFont.truetype("SpaceGrotesk.ttf", 14)
         # name
         draw.text(
