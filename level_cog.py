@@ -79,7 +79,7 @@ class LEVELCOG(commands.Cog):
         # turning the avatar into a circle (and pasting it to the card)
         card = Image.new("RGBA", (500, 200), (0, 0, 0, 0))
         draw = ImageDraw.Draw(card)
-        draw.rounded_rectangle([0, 0, 128, 128], radius=30, fill=(240, 100, 90))
+        draw.rounded_rectangle([0, 0, 500, 200], radius=30, fill=(240, 100, 90))
 
         mask = Image.new("L", (128, 128), 0)
         mask_draw = ImageDraw.Draw(mask)
