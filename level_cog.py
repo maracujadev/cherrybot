@@ -5,7 +5,7 @@ import aiofiles
 import aiohttp
 import discord
 from discord.ext import commands
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 from admin_utils import is_admin
 
@@ -64,9 +64,16 @@ class LEVELCOG(commands.Cog):
     async def give_xp(self, ctx, user_id: str, amount: int):
         await level_add(user_id)
         await add_xp(user_id, amount)
+        await ctx.send(f"I successfully gave {amount} XP to that user.")
 
     @commands.command()
     async def rank(self, ctx):
+        await level_add(str(ctx.author.id))
+        async with aiofiles.open("levels.json", "r") as f:
+            content = await f.read()
+            data = json.loads(content)
+        cur_xp = f"{data[str(ctx.author.id)][0]} XP"
+        cur_level = f"Level {data[str(ctx.author.id)][1]}"
         async with (
             aiohttp.ClientSession() as session,
             session.get(str(ctx.author.display_avatar.url)) as resp,
@@ -79,13 +86,37 @@ class LEVELCOG(commands.Cog):
         # turning the avatar into a circle (and pasting it to the card)
         card = Image.new("RGBA", (500, 200), (0, 0, 0, 0))
         draw = ImageDraw.Draw(card)
-        draw.rounded_rectangle([0, 0, 500, 200], radius=30, fill=(240, 100, 90))
+        draw.rounded_rectangle([0, 0, 128, 128], radius=30, fill=(240, 100, 90))
 
         mask = Image.new("L", (128, 128), 0)
         mask_draw = ImageDraw.Draw(mask)
         mask_draw.ellipse([0, 0, 128, 128], fill=255)
 
         card.paste(avatar, (30, 36), mask)
+
+        draw.rounded_rectangle([330, 10, 480, 90], radius=20, fill=(221, 127, 65))
+        draw.rounded_rectangle([330, 100, 480, 180], radius=20, fill=(221, 127, 65))
+
+        font1 = ImageFont.truetype("arial.ttf", 24)
+        draw.text(
+            (150, 20),
+            f"{ctx.author.name.upper()}  {cur_level}",
+            fill=(0, 0, 0),
+            font=font1,
+        )
+        draw.text((150, 60), f"{cur_xp} XP / 100 XP", fill=(0, 0, 0), font=font1)
+
+        bar_x1, bar_y1 = 150, 100
+        bar_x2, bar_y2 = 480, 115
+
+        draw.rounded_rectangle(
+            [bar_x1, bar_y1, bar_x2, bar_y2], radius=8, fill=(220, 220, 220)
+        )
+
+        fill_width = int((bar_x2 - bar_x1) * (cur_xp / 100))
+        draw.rounded_rectangle(
+            [bar_x1, bar_y1, bar_x1 + fill_width, bar_y2], radius=8, fill=(240, 100, 90)
+        )
 
         # saving the image to memory
         buffer = io.BytesIO()
