@@ -94,20 +94,20 @@ class LEVELCOG(commands.Cog):
 
         card.paste(avatar, (30, 36), mask)
 
-        draw.rounded_rectangle([330, 10, 480, 90], radius=20, fill=(221, 127, 65))
-        draw.rounded_rectangle([330, 100, 480, 180], radius=20, fill=(221, 127, 65))
+        draw.rounded_rectangle([170, 20, 480, 60], radius=20, fill=(240, 100, 90))
+        draw.rounded_rectangle([170, 75, 480, 175], radius=20, fill=(240, 100, 90))
 
         font1 = ImageFont.load_default()
         draw.text(
-            (150, 20),
+            (185, 28),
             f"{ctx.author.name.upper()}  {cur_level}",
             fill=(0, 0, 0),
             font=font1,
         )
-        draw.text((150, 60), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font1)
+        draw.text((185, 90), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font1)
 
-        bar_x1, bar_y1 = 150, 100
-        bar_x2, bar_y2 = 480, 115
+        bar_x1, bar_y1 = 185, 130
+        bar_x2, bar_y2 = 465, 145
 
         xp_value = data[str(ctx.author.id)][0]
 
@@ -117,7 +117,7 @@ class LEVELCOG(commands.Cog):
 
         fill_width = int((bar_x2 - bar_x1) * (xp_value / 100))
         draw.rounded_rectangle(
-            [bar_x1, bar_y1, bar_x1 + fill_width, bar_y2], radius=8, fill=(240, 100, 90)
+            [bar_x1, bar_y1, bar_x1 + fill_width, bar_y2], radius=8, fill=(29, 163, 121)
         )
 
         # saving the image to memory
