@@ -97,7 +97,7 @@ class LEVELCOG(commands.Cog):
         draw.rounded_rectangle([170, 20, 480, 60], radius=20, fill=(240, 100, 90))
         draw.rounded_rectangle([170, 75, 480, 175], radius=20, fill=(240, 100, 90))
 
-        font1 = ImageFont.truetype("aachen-bold.otf", 28)
+        font1 = ImageFont.truetype("aachen-bold.otf", 14)
         draw.text(
             (185, 28),
             f"{ctx.author.name.upper()}",
