@@ -99,16 +99,18 @@ class LEVELCOG(commands.Cog):
 
         font1 = ImageFont.truetype("Anta.ttf", 14)
         font2 = ImageFont.truetype("SpaceGrotesk.ttf", 14)
+        # name
         draw.text(
-            (185, 28),
+            (185, 40),
             f"{ctx.author.name.upper()}",
-            fill=(255, 215, 0),
+            fill=(214, 118, 203),
             font=font1,
             stroke_width=2,
             stroke_fill=(0, 0, 0),
         )
+        # xp and level
         draw.text((185, 90), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font2)
-        draw.text((250, 90), f"{cur_level}", fill=(0, 0, 0), font=font2)
+        draw.text((450, 90), f"{cur_level}", fill=(0, 0, 0), font=font2)
 
         bar_x1, bar_y1 = 185, 130
         bar_x2, bar_y2 = 465, 145
