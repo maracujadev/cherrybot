@@ -97,7 +97,7 @@ class LEVELCOG(commands.Cog):
         draw.rounded_rectangle([330, 10, 480, 90], radius=20, fill=(221, 127, 65))
         draw.rounded_rectangle([330, 100, 480, 180], radius=20, fill=(221, 127, 65))
 
-        font1 = ImageFont.truetype("arial.ttf", 24)
+        font1 = ImageFont.load_default()
         draw.text(
             (150, 20),
             f"{ctx.author.name.upper()}  {cur_level}",
