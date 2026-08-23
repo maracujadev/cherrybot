@@ -101,7 +101,7 @@ class LEVELCOG(commands.Cog):
         draw.text(
             (185, 28),
             f"{ctx.author.name.upper()}",
-            fill=(0, 0, 0),
+            fill=(255, 215, 0),
             font=font1,
             stroke_width=2,
             stroke_fill=(0, 0, 0),
