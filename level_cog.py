@@ -97,7 +97,8 @@ class LEVELCOG(commands.Cog):
         draw.rounded_rectangle([170, 20, 480, 60], radius=20, fill=(240, 100, 90))
         draw.rounded_rectangle([170, 75, 480, 175], radius=20, fill=(240, 100, 90))
 
-        font1 = ImageFont.truetype("aachen-bold.otf", 14)
+        font1 = ImageFont.truetype("Anta.ttf", 14)
+        font2 = ImageFont.truetype("SpaceGrotesk.ttf", 14)
         draw.text(
             (185, 28),
             f"{ctx.author.name.upper()}",
@@ -106,7 +107,8 @@ class LEVELCOG(commands.Cog):
             stroke_width=2,
             stroke_fill=(0, 0, 0),
         )
-        draw.text((185, 90), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font1)
+        draw.text((185, 90), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font2)
+        draw.text((250, 90), f"{cur_level}", fill=(0, 0, 0), font=font2)
 
         bar_x1, bar_y1 = 185, 130
         bar_x2, bar_y2 = 465, 145
