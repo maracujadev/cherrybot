@@ -104,16 +104,18 @@ class LEVELCOG(commands.Cog):
             fill=(0, 0, 0),
             font=font1,
         )
-        draw.text((150, 60), f"{cur_xp} XP / 100 XP", fill=(0, 0, 0), font=font1)
+        draw.text((150, 60), f"{cur_xp} / 100 XP", fill=(0, 0, 0), font=font1)
 
         bar_x1, bar_y1 = 150, 100
         bar_x2, bar_y2 = 480, 115
+
+        xp_value = data[str(ctx.author.id)][0]
 
         draw.rounded_rectangle(
             [bar_x1, bar_y1, bar_x2, bar_y2], radius=8, fill=(220, 220, 220)
         )
 
-        fill_width = int((bar_x2 - bar_x1) * (cur_xp / 100))
+        fill_width = int((bar_x2 - bar_x1) * (xp_value / 100))
         draw.rounded_rectangle(
             [bar_x1, bar_y1, bar_x1 + fill_width, bar_y2], radius=8, fill=(240, 100, 90)
         )
