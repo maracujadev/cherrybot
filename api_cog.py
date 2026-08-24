@@ -26,6 +26,16 @@ class APICOG(commands.Cog):
             await ctx.send("Cant fetch a cat right now. Try again later.")
             print(f"Debug error: {e}")
 
+    @commands.command(name="duck")
+    async def duck(self, ctx):
+        async with (
+            aiohttp.ClientSession() as session,
+            session.get("https://random-d.uk/api/random") as response,
+        ):
+            data = await response.json()
+
+        await ctx.send(data["url"])
+
 
 async def setup(bot):
     await bot.add_cog(APICOG(bot))

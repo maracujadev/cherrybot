@@ -95,6 +95,66 @@ async def adminrole(ctx):
     await ctx.send(f"The admin role for this server is {role.name}.")
 
 
+# ADDING A WELCOME CHANNEL
+@bot.command()
+@commands.check(is_admin)
+async def welcome_add(ctx, channel: discord.TextChannel):
+    async with aiofiles.open("welcome.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
+    data[str(ctx.guild.id)] = channel.id
+    async with aiofiles.open("welcome.json", "w") as f:
+        await f.write(json.dumps(data))
+    await ctx.send("I successfully made that channel your welcome channel.")
+
+
+# REMOVING A WELCOME CHANNEL
+@bot.command()
+@commands.check(is_admin)
+async def welcome_remove(ctx):
+    async with aiofiles.open("welcome.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
+    if str(ctx.guild.id) not in data:
+        await ctx.send(
+            "Your server currently doesnt have a welcome channel. \nFeel free to add one with `%welcome_add [mention the channel]`."
+        )
+        return
+    data.pop(str(ctx.guild.id), None)
+    async with aiofiles.open("welcome.json", "w") as f:
+        await f.write(json.dumps(data))
+    await ctx.send(
+        "I successfully removed your welcome channel. There will no longer be notifications."
+    )
+
+
+# SEEING WHAT THE WELCOME CHANNEL IS
+@bot.command()
+async def welcome_see(ctx):
+    async with aiofiles.open("welcome.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
+    if str(ctx.guild.id) not in data:
+        await ctx.send(
+            "Your server currently doesnt have a welcome channel. \nFeel free to add one with `%welcome_add [mention the channel]`."
+        )
+        return
+    await ctx.send(f"""The current welcome channel on your server is <#{data[str(ctx.guild.id)]}>.
+Feel free to give a new channel with `%welcome_add [mention the channel]`.
+Feel free to remove the channel with `%welcome_remove`.""")
+
+
+@bot.event
+async def on_member_join(member):
+    async with aiofiles.open("welcome.json", "r") as f:
+        content = await f.read()
+        data = json.loads(content)
+    if str(member.guild.id) not in data:
+        return
+    channel = bot.get_channel(data[str(member.guild.id)])
+    await channel.send(f"Welcome, {member.mention}!")
+
+
 ##### BASIC COMMANDS
 
 
@@ -359,15 +419,6 @@ async def on_raw_reaction_remove(payload):
     member = guild.get_member(payload.user_id)
 
     await member.remove_roles(role)
-
-
-WELCOME_CHANNEL = 1516017173439582229
-
-
-@bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(WELCOME_CHANNEL)
-    await channel.send(f"Welcome, {member.mention}!")
 
 
 ############
