@@ -21,7 +21,7 @@ class DOCCOG(commands.Cog):
 
     @commands.command(name="reaction_setup")
     async def reaction_role_manual(self, ctx):
-        await ctx.send(""">>> # How to set up reaction role""")
+        await ctx.send(""">>> # How to set up reaction roles""")
 
 
 async def setup(bot):

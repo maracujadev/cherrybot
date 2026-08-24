@@ -121,6 +121,18 @@ async def sixtyseven(ctx):
     await ctx.send("https://tenor.com/pU4XiE6POTB.gif")
 
 
+@bot.command(name="aura")
+async def auragif(ctx):
+    await ctx.message.delete()
+    await ctx.send("https://tenor.com/sMnb32ireaJ.gif")
+
+
+@bot.command(name="sigma")
+async def sigmagif(ctx):
+    await ctx.message.delete()
+    await ctx.send("https://tenor.com/uikpn8iHu73.gif")
+
+
 @bot.command()
 async def remind(ctx, amount: int, unit: str, *, message="something!"):
     unit = unit.strip().lower()

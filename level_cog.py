@@ -59,6 +59,9 @@ class LEVELCOG(commands.Cog):
     async def quadratic(self, ctx):
         await ctx.send("This command is only a prototype for now. Lol.")
 
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel
+
     @commands.command()
     @commands.check(is_admin)
     async def give_xp(self, ctx, user_id: str, amount: int):
