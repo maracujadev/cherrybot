@@ -193,6 +193,11 @@ async def sigmagif(ctx):
     await ctx.send("https://tenor.com/uikpn8iHu73.gif")
 
 
+@bot.command(name="merz")
+async def merzgif(ctx):
+    await ctx.send("https://klipy.com/gifs/merz-lackaffe")
+
+
 @bot.command()
 async def remind(ctx, amount: int, unit: str, *, message="something!"):
     unit = unit.strip().lower()
