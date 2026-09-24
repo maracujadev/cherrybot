@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 import aiofiles
 import discord
+from cubescrambler import scrambler222, scrambler333, scrambler444
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -38,6 +39,15 @@ async def on_ready():
 
 
 ##############################################################
+
+
+scrambler333.get_WCA_scramble()
+# "D2 L F2 L2 F2 U2 L D2 F2 L' B' U2 F2 D' F D2 B' U2 R U'"
+
+
+@bot.command()
+async def scramble(ctx):
+    await ctx.send(scrambler333.get_WCA_scramble())
 
 
 @bot.command()
